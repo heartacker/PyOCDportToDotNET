@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UDPSender", "UDPSender\UDPS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinUSBNetApp_VK", "WpfApp1\WinUSBNetApp_VK.csproj", "{64C933B8-E547-4CEE-973D-B685F4D45A0D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VK_pyOCD_Ported.Core", "VK_pyOCD_Ported\VK_pyOCD_Ported.Core.csproj", "{44EDD35D-D685-4DD3-BB67-29DD01AF5D9A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinUSBNetApp_VK.Core", "WpfApp1\WinUSBNetApp_VK.Core.csproj", "{C38600BB-F066-4E48-A004-1082635F9DD4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{64C933B8-E547-4CEE-973D-B685F4D45A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64C933B8-E547-4CEE-973D-B685F4D45A0D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{64C933B8-E547-4CEE-973D-B685F4D45A0D}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{44EDD35D-D685-4DD3-BB67-29DD01AF5D9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44EDD35D-D685-4DD3-BB67-29DD01AF5D9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44EDD35D-D685-4DD3-BB67-29DD01AF5D9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44EDD35D-D685-4DD3-BB67-29DD01AF5D9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C38600BB-F066-4E48-A004-1082635F9DD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C38600BB-F066-4E48-A004-1082635F9DD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C38600BB-F066-4E48-A004-1082635F9DD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C38600BB-F066-4E48-A004-1082635F9DD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
