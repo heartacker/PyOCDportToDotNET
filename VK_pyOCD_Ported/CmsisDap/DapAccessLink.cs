@@ -82,7 +82,25 @@ namespace openocd.CmsisDap
         //     }
         // }
 
+        public string GetProductName()
+        {
+            if (_backend_interface is Backend.BackendHidUsb)
+            {
+                return (_backend_interface as Backend.BackendHidUsb).product_name.Trim('\0');
+            }
+            else
+            {
+                return (_backend_interface as Backend.BackendWinUsb).product_name.Trim('\0');
+            }
+        }
+
         private IBackend _backend_interface;
+        public IBackend BackendInterface
+        {
+            get { return _backend_interface; }
+            private set { _backend_interface = value; }
+        }
+
         private bool _deferred_transfer;
         private DebugUnitV2_0_0 _protocol;
         private string _unique_id;
