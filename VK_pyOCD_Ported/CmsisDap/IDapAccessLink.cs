@@ -110,6 +110,18 @@ namespace openocd.CmsisDap
 
     public interface IDapAccessLink
     {
+        /// <summary>
+        /// provider user can knew 
+        /// </summary>
+        /// <returns></returns>
+        string ProductName { get;}
+
+        /// <summary>
+        /// provide use can read/write usb directly;
+        /// </summary>
+        /// <returns></returns>
+        IBackend GetIBackend { get; }
+
         // ------------------------------------------- #
         //          Host control functions
         // ------------------------------------------- #

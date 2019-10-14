@@ -82,25 +82,13 @@ namespace openocd.CmsisDap
         //     }
         // }
 
-        public string GetProductName()
+
+        public IBackend GetIBackend
         {
-            if (_backend_interface is Backend.BackendHidUsb)
-            {
-                return (_backend_interface as Backend.BackendHidUsb).product_name.Trim('\0');
-            }
-            else
-            {
-                return (_backend_interface as Backend.BackendWinUsb).product_name.Trim('\0');
-            }
+            get { return _backend_interface; }
         }
 
         private IBackend _backend_interface;
-        public IBackend BackendInterface
-        {
-            get { return _backend_interface; }
-            private set { _backend_interface = value; }
-        }
-
         private bool _deferred_transfer;
         private DebugUnitV2_0_0 _protocol;
         private string _unique_id;
@@ -112,6 +100,18 @@ namespace openocd.CmsisDap
         private UInt16? _packet_size;
         internal List<Command> _commands_to_read;
         private List<byte> _command_response_buf;
+
+        string IDapAccessLink.ProductName
+        {
+            get
+            {
+                return (_backend_interface is Backend.BackendHidUsb) ?
+                  (_backend_interface as Backend.BackendHidUsb).product_name.Trim('\0')
+                 : (_backend_interface as Backend.BackendWinUsb).product_name.Trim('\0');
+            }
+
+
+        }
 
         public DapAccessLink(string unique_id, IBackend backend_interface = null)
         {
