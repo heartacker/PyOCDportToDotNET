@@ -28,7 +28,7 @@ namespace openocd.CmsisDap
                 try
                 {
                     var unique_id = DapAccessConsts._get_unique_id(anInterface);
-                    DapAccessLink new_daplink = new DapAccessLink(unique_id);
+                    DapAccessLink new_daplink = new DapAccessLink(unique_id, anInterface);
                     all_daplinks.Add(new_daplink);
                 }
                 catch

@@ -31,11 +31,18 @@ namespace openocd.CmsisDap
             // // Debug.Assert(links.Count > 0);
 
             // GUID is an example, specify your own unique GUID in the .inf file
-            USBDeviceInfo[] details = USBDevice.GetDevices("{CDB3B5AD-293B-4663-AA36-1AAE46463776}");
-            USBDeviceInfo match = details.First(info => info.VID == 0xC251 && info.PID == 0xF00A);
-            BackendWinUsb backend = new BackendWinUsb(match);
-            IDapAccessLink link = new DapAccessLink("WINUSB1", backend); // links.First();
-            
+
+#if FALSE
+            USBDeviceInfo[] details = USBDevice.GetDevices ("{CDB3B5AD-293B-4663-AA36-1AAE46463776}");
+            USBDeviceInfo match = details.First (info => info.VID == 0xC251 && info.PID == 0xF00A);
+            BackendWinUsb backend = new BackendWinUsb (match);
+            IDapAccessLink link = new DapAccessLink ("WINUSB1", backend); // links.First();
+#endif
+            //USBDeviceInfo match = details.First (info => info.VID == 0x046D && info.PID == 0xC52B);
+            var dvs = DapAccessLink.get_connected_devices();
+
+            IDapAccessLink link = dvs.FirstOrDefault();
+
             // IDapAccessLink link = links.First();
             link.open();
             link.set_clock(300000); // Typically 1.8..2.0 MHz is fastest speed allowed
