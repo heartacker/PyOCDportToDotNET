@@ -16,17 +16,17 @@ namespace openocd.CmsisDap
     {
         static void Main(string[] args)
         {
-           // {
-           //     byte[] bin = File.ReadAllBytes(@"c:\Projects\MOAP\RandD\VK_PyOCD\VK_pyOCD_Ported\Targets\STM32F7x_1024.bin");
-           //     Debug.Assert(bin.Length % 4 == 0);
-           //     UInt32[] uints = new UInt32[bin.Length / 4];
-           //     Buffer.BlockCopy(bin, 0, uints, 0, bin.Length);
-           //     foreach (UInt32 uin in uints)
-           //     {
-           //         Trace.TraceInformation("0x{0:X8}", uin);
-           //     }
-           // }
-           
+            // {
+            //     byte[] bin = File.ReadAllBytes(@"c:\Projects\MOAP\RandD\VK_PyOCD\VK_pyOCD_Ported\Targets\STM32F7x_1024.bin");
+            //     Debug.Assert(bin.Length % 4 == 0);
+            //     UInt32[] uints = new UInt32[bin.Length / 4];
+            //     Buffer.BlockCopy(bin, 0, uints, 0, bin.Length);
+            //     foreach (UInt32 uin in uints)
+            //     {
+            //         Trace.TraceInformation("0x{0:X8}", uin);
+            //     }
+            // }
+
             // // List<IDapAccessLink> links = DapAccessLink.get_connected_devices();
             // // Debug.Assert(links.Count > 0);
 
@@ -118,11 +118,11 @@ namespace openocd.CmsisDap
                 ETargetState s = w.getState();
                 Debug.Assert(s == ETargetState.TARGET_HALTED);
             }
-             w.resetStopOnReset();
-             {
-                 ETargetState s = w.getState();
-                 Debug.Assert(s == ETargetState.TARGET_HALTED);
-             }
+            w.resetStopOnReset();
+            {
+                ETargetState s = w.getState();
+                Debug.Assert(s == ETargetState.TARGET_HALTED);
+            }
 
             {
                 UInt32 idcode = w.readIDCode();
@@ -146,8 +146,8 @@ namespace openocd.CmsisDap
             //[15:43:58.343]        // -> [Write32(0xE004200C, 0x00000000)] (__dp=0, __ap=0)
             //[15:43:58.343]    </block>
             //[15:43:58.344]  </sequence>
-        
-        
+
+
             //#define PERIPH_BASE            0x40000000U /*!< Base address of : AHB/ABP Peripherals                                                   */
             // AHB1PERIPH_BASE       (PERIPH_BASE + 0x00020000U)
             // RCC_BASE              (AHB1PERIPH_BASE + 0x3800U)
@@ -167,18 +167,18 @@ namespace openocd.CmsisDap
             //                                                             /* Disable all interrupts RCC clock interrupt register,                                Address offset: 0x0C */
             // 
             // w.write32(0x4002380C, 0); // RCC->CIR = 0x00000000;
-        
-        
-        
+
+
+
             // 0xE0042000 DEBUG_MCU base 
             // 0x08 APB1FZ 
             w.write32(0xE0042008, 0); // DbgMCU_APB1_Fz = 0x00000000;
             w.write32(0xE004200C, 0); // DbgMCU_APB2_Fz = 0x00000000;
-        
+
             //UInt32 scbVtor = w.read32(0xE000ED08)();
             // 0xE000ED08 // SCB->VTOR vector table offset
             w.write32(0xE000ED08, 0x20010000);
-        
+
             {
                 /////
                 //// #define SCB_SHCSR_MEMFAULTENA_Pos          16U                                            /*!< SCB SHCSR: MEMFAULTENA Position */
@@ -191,31 +191,31 @@ namespace openocd.CmsisDap
                 //w.write32(0xE000ED94, 0); // MPU->CR disable
                 UInt32 mpuEnabled = w.read32(0xE000ED94)();
             }
-        
-        
-        
-        
-            w.write32(0xE0042004, 0x00000007 );
+
+
+
+
+            w.write32(0xE0042004, 0x00000007);
             //w.write32(0xE0042004, 0x00000027);
-        
+
             // # Stop watchdog counters during halt
             // # DBGMCU_APB1_FZ |= DBG_IWDG_STOP | DBG_WWDG_STOP
             //w.write32(0xE0042008, 0x00001800 );
             //w.write32(0xE004200C, 0x00001800);
-        
+
             {
                 // 0xE000EDF0 Core Debug base
                 // 0x00C DEMCR
                 // Core Debug -> DEMCR & ~ (1 << DEMCR_MON_EN_Pos )  bit offset 16
                 UInt32 demcr = w.read32(0xE000EDFC)();
-                demcr &= ~((UInt32)1<<16);
+                demcr &= ~((UInt32)1 << 16);
                 w.write32(0xE000EDFC, demcr);
             }
 
             //Flash.Flash flash = new Targets.Target_STM32F7x_1024.Flash_STM32F7x_1024(w);
             Flash.Flash flash = new Targets.Target_W7500.Flash_w7500(w);
             flash.setFlashAlgoDebug(false); // flash.setFlashAlgoDebug(true); 
-            
+
             w.setFlash(flash);
             {
                 w.flash.init();
@@ -230,17 +230,17 @@ namespace openocd.CmsisDap
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 //l.AddRange(w.readBlockMemoryUnaligned8(0x00000000, 49508));
-                l.AddRange(w.readBlockMemoryUnaligned8(0x00000000, 128*1024));
+                l.AddRange(w.readBlockMemoryUnaligned8(0x00000000, 128 * 1024));
                 sw.Stop();
                 Trace.TraceInformation("Reading speed is {0:0.000} kB/s", ((double)128 * 1024 / 1024.0) / sw.Elapsed.TotalSeconds);
-                 if (l.Any(b => b != 0xFF))
-                 {
-                     Trace.TraceError("Erasing failed ..");
-                 };
+                if (l.Any(b => b != 0xFF))
+                {
+                    Trace.TraceError("Erasing failed ..");
+                };
                 //byte[] bytes = l.ToArray();
                 //File.WriteAllBytes(@"C:\temp\flash.bin", bytes);
             }
-            
+
             // 
             byte[] bytes = File.ReadAllBytes(@"c:\temp\flash.bin");
             {
@@ -250,8 +250,8 @@ namespace openocd.CmsisDap
                     chip_erase: true, // meaning that chip erase is already done
                     fast_verify: false);
             }
-            
- 
+
+
             {
                 List<byte> l = new List<byte>();
                 Stopwatch sw = new Stopwatch();

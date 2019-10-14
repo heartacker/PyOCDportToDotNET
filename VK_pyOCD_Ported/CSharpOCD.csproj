@@ -7,7 +7,7 @@
     <ProjectGuid>{8C028023-65CE-42FA-B11A-12260CC57081}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>openocd</RootNamespace>
-    <AssemblyName>VK_pyOCD_Ported</AssemblyName>
+    <AssemblyName>CSharpOCD</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
