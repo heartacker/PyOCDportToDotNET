@@ -338,3 +338,5 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+.vscode
+VK_pyOCD_Ported/VK_pyOCD_Ported.Core.csproj
