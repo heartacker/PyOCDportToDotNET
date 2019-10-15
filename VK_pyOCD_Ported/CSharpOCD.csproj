@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CmsisDap\Backend\BackendHidUsbNew.cs" />
     <Compile Include="CmsisDap\Backend\BackendWinUsb.cs" />
     <Compile Include="CoreSight\Ap.cs" />
     <Compile Include="CoreSight\CortexM.cs" />
@@ -130,8 +131,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Hid.Net">
+      <Version>3.1.0</Version>
+    </PackageReference>
     <PackageReference Include="hidlibrary">
       <Version>3.2.46</Version>
+    </PackageReference>
+    <PackageReference Include="Usb.Net">
+      <Version>3.1.0</Version>
     </PackageReference>
     <PackageReference Include="WinUSBNet">
       <Version>1.0.3</Version>

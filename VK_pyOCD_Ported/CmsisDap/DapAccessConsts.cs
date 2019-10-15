@@ -20,7 +20,7 @@ namespace openocd.CmsisDap
             }
             else
             {
-                return DapAccessConfiguration.getAllConnectedInterface();
+                return DapAccessConfiguration.getAllConnectedInterface(_new: true);
                 //return pyDAPAccess.Interface.__init__.INTERFACE[pyDAPAccess.Interface.__init__.usb_backend].getAllConnectedInterface();
             }
         }
