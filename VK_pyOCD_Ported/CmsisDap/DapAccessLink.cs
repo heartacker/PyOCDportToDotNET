@@ -449,7 +449,9 @@ namespace openocd.CmsisDap
             catch (Exception e)
             {
                 this._abort_all_transfers(e);
-                throw;
+                //todo error when read usb
+                Trace.TraceError("USB Read Fail! Please make sure Board is connecting!");
+                return;
             }
             this._command_response_buf.AddRange(decoded_data);
             // Attach data to transfers
