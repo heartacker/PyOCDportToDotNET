@@ -45,6 +45,12 @@ namespace openocd.CmsisDap
             return new DapAccessLink(device_id);
         }
 
+        public virtual UInt32 readChipID()
+        {
+            var func = this.read_reg(REG_APnDP_A3_A2.DP_0x0, 0, true);
+            return func();
+        }
+
         // [staticmethod]
         // public static object set_args(object arg_list)
         // {

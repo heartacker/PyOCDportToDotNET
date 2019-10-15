@@ -110,6 +110,8 @@ namespace openocd.CmsisDap
 
     public interface IDapAccessLink
     {
+        UInt32 readChipID();
+
         /// <summary>
         /// provider user can knew 
         /// </summary>
