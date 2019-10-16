@@ -114,7 +114,10 @@ namespace openocd.CmsisDap
                     // Skip non cmsis-dap devices
                     continue;
                 }
-                WindowsHidDevice dev = new WindowsHidDevice(deviceInfo.DeviceId);
+                WindowsHidDevice dev = new WindowsHidDevice(deviceInfo.DeviceId)
+                {
+                    ConnectedDeviceDefinition = deviceInfo
+                };
                 try
                 {
                     //dev = hid.device(vendor_id: deviceInfo["vendor_id"], product_id: deviceInfo["product_id"], path: deviceInfo["path"]);

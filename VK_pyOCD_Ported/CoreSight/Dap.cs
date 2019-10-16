@@ -52,12 +52,12 @@ namespace openocd.CoreSight
         internal const byte MATCH_MASK = 1 << 5;
         internal const byte A3_A2 = 0x0C;
         internal const byte APSEL_SHIFT = 24;
-        internal const UInt32 APSEL = 0xFF000000; 
+        internal const UInt32 APSEL = 0xFF000000;
         internal const UInt32 APBANKSEL = 0x000000f0;
         internal const UInt32 APREG_MASK = 0x000000fc;
         internal const UInt32 DPIDR_MIN_MASK = 0x10000;
         internal const UInt16 DPIDR_VERSION_MASK = 0xf000;
-        internal const byte   DPIDR_VERSION_SHIFT = 12;
+        internal const byte DPIDR_VERSION_SHIFT = 12;
         internal const UInt32 CSYSPWRUPACK = 0x80000000;
         internal const UInt32 CDBGPWRUPACK = 0x20000000;
         internal const UInt32 CSYSPWRUPREQ = 0x40000000;
@@ -371,7 +371,7 @@ namespace openocd.CoreSight
             // Debug.Assert(six.integer_types.Contains(type(addr)));
             var num = this.next_access_number;
             //object res = null;
-            REG_APnDP_A3_A2 ap_reg = _ap_addr_to_reg(READ | AP_ACC |(addr & A3_A2));
+            REG_APnDP_A3_A2 ap_reg = _ap_addr_to_reg(READ | AP_ACC | (addr & A3_A2));
             Func<UInt32> result_cb;
             try
             {

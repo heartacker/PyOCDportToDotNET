@@ -156,6 +156,11 @@ namespace openocd.CmsisDap.Backend
         {
             this.packet_size = size;
         }
+        
+        List<byte> IBackend.WriteAndReadAsync(List<byte> data)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

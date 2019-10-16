@@ -35,7 +35,7 @@ namespace openocd.CmsisDap
             this._size = size;
             this._read_count = 0;
             this._write_count = 0;
-            this._block_allowed = true;
+            this._block_allowed = false;// todo ldx 
             this._block_request = null;
             this._data = new List<Tuple<UInt16, EDapTransferRequestByte, List<UInt32>>>();
             this._dap_index = null;

@@ -152,8 +152,14 @@ namespace openocd.CmsisDap
                     (byte)EDapCommandByte.DAP_INFO,
                     (byte)id_
                 };
+
+#if fasle
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_INFO)
             {
                 // Response is to a different command
@@ -193,8 +199,12 @@ namespace openocd.CmsisDap
                     (byte)type,
                     (byte)(enabled ? 1 : 0)
                 };
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_HOST_STATUS_LED)
             {
                 // Response is to a different command
@@ -215,8 +225,12 @@ namespace openocd.CmsisDap
                     (byte)EDapCommandByte.DAP_CONNECT,
                     (byte)mode
                 };
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_CONNECT)
             {
                 // Response is to a different command
@@ -245,8 +259,12 @@ namespace openocd.CmsisDap
                 {
                     (byte)EDapCommandByte.DAP_DISCONNECT
                 };
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_DISCONNECT)
             {
                 // Response is to a different command
@@ -271,8 +289,12 @@ namespace openocd.CmsisDap
                     (byte)((data >> 16) & 0xFF),
                     (byte)((data >> 24) & 0xFF)
                 };
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_WRITE_ABORT)
             {
                 // Response is to a different command
@@ -292,8 +314,12 @@ namespace openocd.CmsisDap
                 {
                     (byte)EDapCommandByte.DAP_RESET_TARGET
                 };
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_RESET_TARGET)
             {
                 // Response is to a different command
@@ -325,8 +351,12 @@ namespace openocd.CmsisDap
                     (byte)(match_retry & 0xFF),
                     (byte)(match_retry >> 8)
                 };
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_TRANSFER_CONFIGURE)
             {
                 // Response is to a different command
@@ -363,8 +393,12 @@ namespace openocd.CmsisDap
                     cmd.Add((byte)((request.Item2 >> 24) & 0xFF));
                 }
             }
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_TRANSFER)
             {
                 // Response is to a different command
@@ -391,8 +425,12 @@ namespace openocd.CmsisDap
                     (byte)((clock >> 16) & 0xFF),
                     (byte)((clock >> 24) & 0xFF)
                 };
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_SWJ_CLOCK)
             {
                 // Response is to a different command
@@ -418,8 +456,12 @@ namespace openocd.CmsisDap
                     (byte)((wait >> 16) & 0xFF),
                     (byte)((wait >> 24) & 0xFF),
                 };
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_SWJ_PINS)
             {
                 // Response is to a different command
@@ -435,8 +477,12 @@ namespace openocd.CmsisDap
                     (byte)EDapCommandByte.DAP_SWD_CONFIGURE,
                     conf
                 };
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_SWD_CONFIGURE)
             {
                 // Response is to a different command
@@ -458,8 +504,12 @@ namespace openocd.CmsisDap
                     (byte)(data.Count * 8)
                 };
             cmd.AddRange(data);
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_SWJ_SEQUENCE)
             {
                 // Response is to a different command
@@ -482,8 +532,12 @@ namespace openocd.CmsisDap
                     info,
                     tdi
                 };
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_JTAG_SEQUENCE)
             {
                 // Response is to a different command
@@ -505,8 +559,12 @@ namespace openocd.CmsisDap
                     dev_num,
                     irlen
                 };
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_JTAG_CONFIGURE)
             {
                 // Response is to a different command
@@ -527,8 +585,12 @@ namespace openocd.CmsisDap
                     (byte)EDapCommandByte.DAP_JTAG_IDCODE,
                     index
                 };
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)EDapCommandByte.DAP_JTAG_IDCODE)
             {
                 // Response is to a different command
@@ -549,8 +611,12 @@ namespace openocd.CmsisDap
                     (byte)((byte)EDapCommandByte.DAP_VENDOR0 + index)
                 };
             cmd.AddRange(data);
+#if false
             this.anInterface.write(cmd);
-            List<byte> resp = this.anInterface.read();
+            List<byte> resp = this.anInterface.read(); 
+#else
+            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+#endif
             if (resp[0] != (byte)((byte)EDapCommandByte.DAP_VENDOR0 + index))
             {
                 // Response is to a different command

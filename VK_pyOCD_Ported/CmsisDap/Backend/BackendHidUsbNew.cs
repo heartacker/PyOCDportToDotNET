@@ -40,6 +40,10 @@ namespace openocd.CmsisDap.Backend
         {
             // Vendor page and usage_id = 2
             this.packet_size = 64;
+            this.vendor_name = deviceInfo.ConnectedDeviceDefinition.VendorId.ToString();
+            this.product_name = deviceInfo.ConnectedDeviceDefinition.ProductName;
+            this.serial_number = deviceInfo.ConnectedDeviceDefinition.SerialNumber;
+
 #if false
             if (deviceInfo.ReadManufacturer(out byte[] data))
             {
@@ -113,9 +117,18 @@ namespace openocd.CmsisDap.Backend
             Debug.Assert(this.packet_size == 64);
             Debug.Assert(data.Count == 64);
             //Trace.TraceInformation("send: {0}", data);
-            List<byte> packet = new List<byte>() { 0 };
-            packet.AddRange(data);
-            this.device.WriteAsync(packet.ToArray());
+
+#if true
+            Console.WriteLine(string.Join(",", data));
+            var x = this.device.WriteAsync(data.ToArray());
+
+#else
+            Console.WriteLine(string.Join(",", data));
+            var x = this.device.WriteAndReadAsync(data.ToArray());
+            x.Wait();
+            var y = x.Result.Data;
+            Console.WriteLine(string.Join(",", y));
+#endif
             // HidReport report = new HidReport(data.Count)
             // {
             //     Data = data.ToArray()
@@ -136,12 +149,48 @@ namespace openocd.CmsisDap.Backend
             {
                 // return report.Data.ToList(); 
                 List<byte> bytes = result.Result.Data.ToList();
+                Console.WriteLine(string.Join(",", bytes));
+#if false
                 return bytes.GetRange(1, bytes.Count - 1);
+#else
+                return bytes;
+#endif
             }
             else
             {
-                throw new Exception();
+                return new List<byte>() { 0 };
             }
+        }
+
+
+        public List<byte> WriteAndReadAsync(List<byte> data)
+        {
+            foreach (var _ in Enumerable.Range(0, (int)this.packet_size - data.Count))
+            {
+                data.Add(0);
+            }
+            Debug.Assert(this.packet_size == 64);
+            Debug.Assert(data.Count == 64);
+            //Trace.TraceInformation("send: {0}", data);
+#if false
+            List<byte> packet = new List<byte>() { 0 };
+                        packet.AddRange(data);
+            var _1 = this.device.WriteAndReadAsync(packet.ToArray());
+#else
+            var _1 = this.device.WriteAndReadAsync(data.ToArray());
+#endif
+
+            var rs = _1.Wait(2000);
+            if (rs)
+            {
+                return _1.Result.Data.ToList();
+            }
+            else
+            {
+                return new List<byte>();
+            }
+
+
         }
 
         public virtual string getSerialNumber()
