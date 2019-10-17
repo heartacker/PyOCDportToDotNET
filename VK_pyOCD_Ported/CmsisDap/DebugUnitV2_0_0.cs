@@ -157,7 +157,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_INFO)
@@ -203,7 +203,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_HOST_STATUS_LED)
             {
@@ -229,7 +229,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_CONNECT)
             {
@@ -263,7 +263,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_DISCONNECT)
             {
@@ -293,7 +293,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_WRITE_ABORT)
             {
@@ -318,7 +318,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_RESET_TARGET)
             {
@@ -355,7 +355,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_TRANSFER_CONFIGURE)
             {
@@ -397,7 +397,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_TRANSFER)
             {
@@ -429,7 +429,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_SWJ_CLOCK)
             {
@@ -460,7 +460,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_SWJ_PINS)
             {
@@ -481,7 +481,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_SWD_CONFIGURE)
             {
@@ -508,7 +508,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_SWJ_SEQUENCE)
             {
@@ -536,7 +536,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_JTAG_SEQUENCE)
             {
@@ -563,7 +563,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_JTAG_CONFIGURE)
             {
@@ -589,7 +589,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)EDapCommandByte.DAP_JTAG_IDCODE)
             {
@@ -615,7 +615,7 @@ namespace openocd.CmsisDap
             this.anInterface.write(cmd);
             List<byte> resp = this.anInterface.read(); 
 #else
-            List<byte> resp = this.anInterface.WriteAndReadAsync(cmd);
+            List<byte> resp = this.anInterface.WriteAndRead(cmd);
 #endif
             if (resp[0] != (byte)((byte)EDapCommandByte.DAP_VENDOR0 + index))
             {

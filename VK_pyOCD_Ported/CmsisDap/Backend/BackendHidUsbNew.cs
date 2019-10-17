@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.ServiceModel;
 
 //namespace pyDAPAccess.Interface
 //{  
@@ -24,6 +25,7 @@ namespace openocd.CmsisDap.Backend
     // a USB HID device using cython-hidapi:
     //     - write/read an endpoint
     // 
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class BackendHidUsbNew : IBackend
     {
         public readonly string vendor_name;
@@ -35,6 +37,35 @@ namespace openocd.CmsisDap.Backend
         internal UInt16 packet_size;
         internal string serial_number { get; }
         internal readonly Hid.Net.Windows.WindowsHidDevice device;
+
+        private static List<BackendHidUsbNew> Deviceslist = new List<BackendHidUsbNew>();
+        public static BackendHidUsbNew Current { get; private set; }
+
+        public static void Singleton(BackendHidUsbNew single)
+        {
+            foreach (var item in Deviceslist)
+            {
+                if (item == single)
+                {
+                    Current = item;
+                    return;
+                }
+            }
+        }
+        protected BackendHidUsbNew()
+        {
+            Trace.Assert(Current != null);
+        }
+        ~BackendHidUsbNew()
+        {
+            try
+            {
+                Deviceslist.Remove(this);
+            }
+            catch (Exception)
+            {
+            }
+        }
 
         public BackendHidUsbNew(Hid.Net.Windows.WindowsHidDevice deviceInfo)
         {
@@ -74,6 +105,7 @@ namespace openocd.CmsisDap.Backend
 #endif
             this.device_info = deviceInfo;
             this.device = deviceInfo;
+            Deviceslist.Add(this);
         }
 
         public bool isAvailable { get; set; }
@@ -119,8 +151,15 @@ namespace openocd.CmsisDap.Backend
             //Trace.TraceInformation("send: {0}", data);
 
 #if true
-            Console.WriteLine(string.Join(",", data));
+
+            Trace.WriteLine("WriteStart " + DateTime.Now);
             var x = this.device.WriteAsync(data.ToArray());
+            foreach (var item in data)
+            {
+                Trace.Write(item.ToString("x2") + " ,");
+            }
+            Trace.WriteLine("WriteStop  " + DateTime.Now);
+
 
 #else
             Console.WriteLine(string.Join(",", data));
@@ -142,6 +181,7 @@ namespace openocd.CmsisDap.Backend
         public List<byte> read(int size = -1, int timeout = -1)
         {
             // HidReport report = this.device.ReadReport();
+            Trace.WriteLine("ReadStart :" + DateTime.Now);
             var result = this.device.ReadAsync();
             var r = result.Wait(2000);
             if (r)
@@ -149,7 +189,11 @@ namespace openocd.CmsisDap.Backend
             {
                 // return report.Data.ToList(); 
                 List<byte> bytes = result.Result.Data.ToList();
-                Console.WriteLine(string.Join(",", bytes));
+                foreach (var item in bytes)
+                {
+                    Trace.Write(item.ToString("x2") + " ,");
+                }
+                Trace.WriteLine("ReadStop  :" + DateTime.Now);
 #if false
                 return bytes.GetRange(1, bytes.Count - 1);
 #else
@@ -163,7 +207,7 @@ namespace openocd.CmsisDap.Backend
         }
 
 
-        public List<byte> WriteAndReadAsync(List<byte> data)
+        public List<byte> WriteAndRead(List<byte> data)
         {
             foreach (var _ in Enumerable.Range(0, (int)this.packet_size - data.Count))
             {
@@ -177,12 +221,24 @@ namespace openocd.CmsisDap.Backend
                         packet.AddRange(data);
             var _1 = this.device.WriteAndReadAsync(packet.ToArray());
 #else
+            Trace.WriteLine("ReadWrite :" + DateTime.Now);
             var _1 = this.device.WriteAndReadAsync(data.ToArray());
+            foreach (var item in data)
+            {
+                Trace.Write(item.ToString("x2") + " ,");
+            }
+
 #endif
 
             var rs = _1.Wait(2000);
             if (rs)
             {
+                foreach (var item in _1.Result.Data)
+                {
+                    Trace.Write(item.ToString("x2") + " ,");
+                }
+                Trace.WriteLine("ReadWrites ^:" + DateTime.Now);
+
                 return _1.Result.Data.ToList();
             }
             else
@@ -211,6 +267,20 @@ namespace openocd.CmsisDap.Backend
         public void setPacketSize(UInt16 size)
         {
             this.packet_size = size;
+        }
+
+        public byte getset_packet_count(byte? valu, bool get)
+        {
+            if (get)
+            {
+            }
+            else
+            {
+                Trace.Assert(valu != null);
+                packet_count = (byte)valu;
+
+            }
+            return packet_count;
         }
     }
 }

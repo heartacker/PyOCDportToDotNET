@@ -17,7 +17,15 @@ namespace openocd.CmsisDap
 {
     public class DapAccessConfiguration : IDapAccessConfiguration
     {
-        public bool isAvailable { get; private set; }
+        private static IEnumerable<ConnectedDeviceDefinition> _devices;
+        private static bool _TransUsbFromHost = false;
+        public static void TransUsbFromHost(IEnumerable<ConnectedDeviceDefinition> devices)
+        {
+            _devices = devices;
+            _TransUsbFromHost = true;
+        }
+        public bool isAvailable
+        { get; private set; }
 
         public List<IDapAccessLink> get_connected_devices()
         {
@@ -78,32 +86,45 @@ namespace openocd.CmsisDap
         /// <summary>
         /// TODO: Test these!
         /// </summary>
-        private static readonly DebugLogger Logger = new DebugLogger();
-        private static readonly DebugTracer Tracer = new DebugTracer();
+        private static readonly DebugLogger logger = new DebugLogger();
+        private static readonly DebugTracer tracer = new DebugTracer();
 
-        public static List<IBackend> getAllConnectedInterface(bool _new)
+        public async static Task<List<IBackend>> getAllConnectedInterface(bool _new)
         {
 
             if (!_new)
             {
                 return getAllConnectedInterface();
             }
-            List<IBackend> boards = new List<IBackend>();
+            if (_TransUsbFromHost)
+            {
+                return getAllConnectedInterface(_devices);
+            }
 
-            WindowsUsbDeviceFactory.Register(Logger, Tracer);
-            WindowsHidDeviceFactory.Register(Logger, Tracer);
 
-            var task = DeviceManager.Current.GetConnectedDeviceDefinitionsAsync(null);
+            WindowsUsbDeviceFactory.Register(logger, tracer);
+            WindowsHidDeviceFactory.Register(logger, tracer);
+
+            var devices = await DeviceManager.Current.GetConnectedDeviceDefinitionsAsync(null);
+#if false
             var w = task.Wait(2000);
-            if (!w) return boards;
-
+            if (!w) return boards; 
             var devices = task.Result;
+#endif
+
+            return getAllConnectedInterface(devices);
+        }
+
+        private static List<IBackend> getAllConnectedInterface(IEnumerable<ConnectedDeviceDefinition> devices)
+        {
+            List<IBackend> boards = new List<IBackend>();
 
             if (!devices.Any())
             {
                 Trace.TraceInformation("No Mbed device connected");
                 return boards;
             }
+            _devices = devices;
             foreach (var deviceInfo in devices)
             {
                 //deviceInfo.ReadProduct(out byte[] data);
@@ -132,6 +153,5 @@ namespace openocd.CmsisDap
             }
             return boards;
         }
-
     }
 }

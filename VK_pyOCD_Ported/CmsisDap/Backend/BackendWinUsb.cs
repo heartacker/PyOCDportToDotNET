@@ -115,9 +115,23 @@ namespace openocd.CmsisDap.Backend
             this.packet_size = size;
         }
 
-        public List<byte> WriteAndReadAsync(List<byte> data)
+        public List<byte> WriteAndRead(List<byte> data)
         {
             throw new NotImplementedException();
+        }
+
+        public byte getset_packet_count(byte? valu, bool get)
+        {
+            if (get)
+            {
+            }
+            else
+            {
+                Trace.Assert(valu != null);
+                packet_count = (byte)valu;
+
+            }
+            return packet_count;
         }
     }
 }

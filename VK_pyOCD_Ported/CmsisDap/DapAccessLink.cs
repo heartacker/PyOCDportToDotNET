@@ -179,7 +179,7 @@ namespace openocd.CmsisDap
                 Debug.Assert(dapInfo != null);
                 this._packet_count = (byte)dapInfo;
             }
-            this._backend_interface.packet_count = (byte)this._packet_count;
+            this._backend_interface.getset_packet_count((byte)this._packet_count, false);
             {
                 object dapInfo = this._protocol.dapInfo(EDapInfoIDByte.MAX_PACKET_SIZE);
                 Debug.Assert(dapInfo != null);
@@ -450,7 +450,7 @@ namespace openocd.CmsisDap
             {
                 this._abort_all_transfers(e);
                 //todo error when read usb
-                Trace.TraceError("USB Read Fail! Please make sure Board is connecting!");
+                Trace.TraceError(e.Message);
                 return;
             }
             this._command_response_buf.AddRange(decoded_data);
@@ -499,7 +499,8 @@ namespace openocd.CmsisDap
             {
                 return;
             }
-            byte max_packets = this._backend_interface.packet_count;
+
+            byte max_packets = this._backend_interface.getset_packet_count(null, true);
             if (this._commands_to_read.Count >= max_packets)
             {
                 this._read_packet();
