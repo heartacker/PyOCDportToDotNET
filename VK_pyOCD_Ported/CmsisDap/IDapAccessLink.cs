@@ -110,13 +110,15 @@ namespace openocd.CmsisDap
 
     public interface IDapAccessLink
     {
+        string CheckCompatible();
+
         UInt32 readChipID();
 
         /// <summary>
         /// provider user can knew 
         /// </summary>
         /// <returns></returns>
-        string ProductName { get;}
+        string ProductName { get; }
 
         /// <summary>
         /// provide use can read/write usb directly;

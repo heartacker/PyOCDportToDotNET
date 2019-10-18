@@ -624,5 +624,60 @@ namespace openocd.CmsisDap
             }
         }
 
+        public string CheckCompatible()
+        {
+
+            List<string> _s = new List<string>();
+            object capabilities = this.identify(EDapInfoIDByte.CAPABILITIES);
+            //                 Available transfer protocols to target:
+            // 
+            //                 Info0 - Bit 0: 1 = SWD Serial Wire Debug communication is implemented (0 = SWD Commands not implemented).
+            // Info0 - Bit 1: 1 = JTAG communication is implemented (0 = JTAG Commands not implemented).
+            // Serial Wire Trace(SWO) support:
+            // 
+            //                 Info0 - Bit 2: 1 = SWO UART - UART Serial Wire Output is implemented (0 = not implemented).
+            // Info0 - Bit 3: 1 = SWO Manchester - Manchester Serial Wire Output is implemented (0 = not implemented).
+            // Command extensions for transfer protocol:
+            // 
+            // Info0 - Bit 4: 1 = Atomic Commands - Atomic Commands support is implemented (0 = Atomic Commands not implemented).
+            // Time synchronisation via Test Domain Timer:
+            // 
+            // Info0 - Bit 5: 1 = Test Domain Timer -debug unit support for Test Domain Timer is implemented (0 = not implemented).
+            // SWO Streaming Trace support:
+            // 
+            // Info0 - Bit 6: 1 = SWO Streaming Trace is implemented (0 = not implemented).
+            UInt16 flags = (capabilities is byte) ? (byte)capabilities : (UInt16)capabilities;
+            if ((flags & 0x0001) != 0)
+            {
+                _s.Add("CAPABILITY: SWD Serial Wire Debug communication is implemented");
+            }
+            if ((flags & 0x0002) != 0)
+            {
+                _s.Add("CAPABILITY: JTAG communication is implemented");
+            }
+            if ((flags & 0x0004) != 0)
+            {
+                _s.Add("CAPABILITY: SWO UART - UART Serial Wire Output is implemented");
+            }
+            if ((flags & 0x0008) != 0)
+            {
+                _s.Add("CAPABILITY: SWO Manchester - Manchester Serial Wire Output is implemented");
+            }
+            if ((flags & 0x0010) != 0)
+            {
+                _s.Add("CAPABILITY: Atomic Commands - Atomic Commands support is implemented");
+            }
+            if ((flags & 0x0020) != 0)
+            {
+                _s.Add("CAPABILITY: Test Domain Timer -debug unit support for Test Domain Timer is implemented");
+            }
+            if ((flags & 0x0040) != 0)
+            {
+                _s.Add("CAPABILITY: SWO Streaming Trace is implemented");
+            }
+            var c = string.Join("\r\n", _s);
+            return c;
+
+        }
     }
 }
