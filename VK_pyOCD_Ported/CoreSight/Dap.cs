@@ -297,17 +297,20 @@ namespace openocd.CoreSight
             Debug.Assert(Enum.IsDefined(typeof(REG_APnDP_A3_A2), addr));
             var num = this.next_access_number;
             // Skip writing DP SELECT register if its value is not changing.
-            if (addr == DP_REG["SELECT"])
+            if (false)
             {
-                if (data == this._dp_select)
+                if (addr == DP_REG["SELECT"])
                 {
-                    if (LOG_DAP)
+                    if (data == this._dp_select)
                     {
-                        Trace.TraceInformation("writeDP:%06d cached (addr=0x%08x) = 0x%08x", num, addr, data);
+                        if (LOG_DAP)
+                        {
+                            Trace.TraceInformation("writeDP:%06d cached (addr=0x%08x) = 0x%08x", num, addr, data);
+                        }
+                        return true;
                     }
-                    return true;
+                    this._dp_select = (int)data;
                 }
-                this._dp_select = (int)data;
             }
             // Write the DP register.
             try
@@ -334,17 +337,20 @@ namespace openocd.CoreSight
             byte bank_sel = (byte)(addr & APBANKSEL);
             byte ap_regaddr = (byte)(addr & APREG_MASK);
             // Don't need to write CSW if it's not changing value.
-            if (ap_regaddr == AP_REG["CSW"])
+            if (false)
             {
-                if (this._csw.ContainsKey(ap_sel) && (data == this._csw[ap_sel]))
+                if (ap_regaddr == AP_REG["CSW"])
                 {
-                    if (LOG_DAP)
+                    if (this._csw.ContainsKey(ap_sel) && (data == this._csw[ap_sel]))
                     {
-                        Trace.TraceInformation("writeAP:%06d cached (addr=0x%08x) = 0x%08x", num, addr, data);
+                        if (LOG_DAP)
+                        {
+                            Trace.TraceInformation("writeAP:%06d cached (addr=0x%08x) = 0x%08x", num, addr, data);
+                        }
+                        return true;
                     }
-                    return true;
+                    this._csw[ap_sel] = data;
                 }
-                this._csw[ap_sel] = data;
             }
             // Select the AP and bank.
             this.writeDP(DP_REG["SELECT"], ap_sel | bank_sel);
