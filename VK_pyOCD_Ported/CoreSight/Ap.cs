@@ -225,7 +225,7 @@ namespace openocd.CoreSight
             {
                 this.write_reg(DebugAccessPort.AP_REG["CSW"], CSW_VALUE | TRANSFER_SIZE[(int)transfer_size]);
                 this.write_reg(DebugAccessPort.AP_REG["TAR"], addr);
-                result_cb = this.read_reg(DebugAccessPort.AP_REG["DRW"], now: false);
+                result_cb = this.read_reg(DebugAccessPort.AP_REG["DRW"], now: true);
             }
             catch (Exception error)
             {

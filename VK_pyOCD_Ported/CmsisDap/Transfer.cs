@@ -96,7 +96,8 @@ namespace openocd.CmsisDap
         //         
         public virtual List<UInt32> get_result()
         {
-            while (this._result == null)
+            var I = 2;
+            while (this._result == null&& I--!=0)
             {
                 if (this.daplink._commands_to_read.Count > 0)
                 {

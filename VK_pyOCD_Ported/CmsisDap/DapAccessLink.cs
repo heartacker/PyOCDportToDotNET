@@ -267,6 +267,23 @@ namespace openocd.CmsisDap
 
         public void flush()
         {
+            flush(false);
+        }
+
+        public void flush(bool isread)
+        {
+
+            if (isread)
+            {
+                var cmd = this._crnt_cmd;
+                var rsp = this._backend_interface.WriteAndRead(cmd.encode_data().ToList());
+                var data = cmd.decode_data(rsp);
+                var transfer = this._transfer_list[0];
+                this._transfer_list.RemoveAt(0); // popleft();
+                transfer.add_response(data);
+
+                return;
+            }
             // Send current packet
             this._send_packet();
             // Read all backlogged
@@ -445,6 +462,7 @@ namespace openocd.CmsisDap
             {
                 List<byte> raw_data = this._backend_interface.read();
                 decoded_data = cmd.decode_data(raw_data);
+
             }
             catch (Exception e)
             {
@@ -579,7 +597,17 @@ namespace openocd.CmsisDap
             }
             if (!this._deferred_transfer)
             {
-                this.flush();
+#if false
+                if (is_read != 0)
+                {
+
+                    this.flush(true);
+                }
+                else 
+#endif
+                {
+                    this.flush();
+                }
             }
             return transfer;
         }
