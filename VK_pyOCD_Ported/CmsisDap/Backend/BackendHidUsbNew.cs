@@ -221,25 +221,25 @@ namespace openocd.CmsisDap.Backend
                         packet.AddRange(data);
             var _1 = this.device.WriteAndReadAsync(packet.ToArray());
 #else
-            Trace.WriteLine("ReadWrite :>>" + DateTime.Now);
+            Debug.WriteLine("ReadWrite :>>" + DateTime.Now);
             var _1 = this.device.WriteAndReadAsync(data.ToArray());
             foreach (var item in data)
             {
-                Trace.Write(item.ToString("x2") + " ,");
+                Debug.Write(item.ToString("x2") + " ,");
             }
 
 #endif
 
             var rs = _1.Wait(2000);
-            Trace.WriteLine("\r\nReadWrites :<<" + DateTime.Now);
+            Debug.WriteLine("\r\nReadWrites :<<" + DateTime.Now);
 
             if (rs)
             {
                 foreach (var item in _1.Result.Data)
                 {
-                    Trace.Write(item.ToString("x2") + " ,");
+                    Debug.Write(item.ToString("x2") + " ,");
                 }
-                Trace.WriteLine("ReadWrites :<<" + DateTime.Now);
+                Debug.WriteLine("ReadWrites :<<" + DateTime.Now);
 
                 return _1.Result.Data.ToList();
             }

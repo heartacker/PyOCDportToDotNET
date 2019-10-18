@@ -265,8 +265,64 @@ namespace openocd.CmsisDap
             this._deferred_transfer = enable;
         }
 
+        public void flush(bool new1)
+        {
+            var cmd = this._crnt_cmd;
+            if (cmd.get_empty())
+            {
+                return;
+            }
+
+            byte max_packets = this._backend_interface.getset_packet_count(null, true);
+            if (this._commands_to_read.Count >= max_packets)
+            {
+                this._read_packet();
+            }
+            var data = cmd.encode_data();
+            List<byte> decoded_data;
+            try
+            {
+
+                List<byte> raw_data = this._backend_interface.WriteAndRead(data.ToList());
+                decoded_data = cmd.decode_data(raw_data);
+            }
+            catch (Exception e)
+            {
+                this._abort_all_transfers(e);
+                throw;
+            }
+
+
+            this._commands_to_read.Add(cmd);
+            this._crnt_cmd = new Command((UInt16)this._packet_size);
+            this._commands_to_read.RemoveAt(0); // popleft(); 
+
+            var transfer = this._transfer_list.Last();
+
+            UInt32 size = transfer.get_data_size();
+            if (this._transfer_list.Count > 1)
+            {
+                this._transfer_list.RemoveAt(0); // popleft();
+
+            }
+
+
+
+
+            this._command_response_buf.AddRange(decoded_data);
+
+            var datar = this._command_response_buf.GetRange((int)0, (int)size);
+            transfer.add_response(datar);
+
+
+        }
+
         public void flush()
         {
+            #if false
+            this.flush(true);
+            return;
+            #endif
             // Send current packet
             this._send_packet();
             // Read all backlogged
@@ -508,6 +564,8 @@ namespace openocd.CmsisDap
             var data = cmd.encode_data();
             try
             {
+
+                var x = this._backend_interface.WriteAndRead(data.ToList());
                 this._backend_interface.write(data.ToList());
             }
             catch (Exception e)

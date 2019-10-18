@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
+
 namespace openocd.CmsisDap
 {
     // 
@@ -70,7 +70,7 @@ namespace openocd.CmsisDap
             List<UInt32> result = new List<UInt32>();
             foreach (var i in Enumerable.Range(0, (int)this._size_bytes / 4))
             {
-                UInt32 word = 
+                UInt32 word =
                     (
                     ((UInt32)data[0 + i * 4] << 0) |
                     ((UInt32)data[1 + i * 4] << 8) |
@@ -96,7 +96,8 @@ namespace openocd.CmsisDap
         //         
         public virtual List<UInt32> get_result()
         {
-            while (this._result == null)
+            int cnt = 2;
+            while (this._result == null && cnt-- != 0)
             {
                 if (this.daplink._commands_to_read.Count > 0)
                 {

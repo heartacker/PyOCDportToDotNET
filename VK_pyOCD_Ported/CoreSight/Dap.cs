@@ -253,7 +253,7 @@ namespace openocd.CoreSight
             Func<UInt32> result_cb;
             try
             {
-                result_cb = this.link.read_reg(addr, now: false);
+                result_cb = this.link.read_reg(addr, now: true);
             }
             catch (Exception error)
             {

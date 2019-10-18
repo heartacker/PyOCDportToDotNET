@@ -40,7 +40,7 @@ namespace openocd.CmsisDap
         public static readonly bool use_ws = false;
         public static readonly string ws_host = "localhost";
         public static readonly UInt16 ws_port = 8081;
-        public static readonly bool limit_packets = false;
+        public static readonly bool limit_packets = true;
     }
 
 }
