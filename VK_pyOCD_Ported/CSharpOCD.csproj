@@ -82,7 +82,6 @@
     <Compile Include="CoreSight\RomTable.cs" />
     <Compile Include="Core\CoreSightTarget.cs" />
     <Compile Include="Core\MemoryMap.cs" />
-    <Compile Include="CmsisDap\Backend\BackendHidUsb.cs" />
     <Compile Include="CmsisDap\DebugUnitV2_0_0.cs" />
     <Compile Include="CmsisDap\Command.cs" />
     <Compile Include="CmsisDap\DapAccessConsts.cs" />

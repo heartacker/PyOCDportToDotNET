@@ -152,13 +152,13 @@ namespace openocd.CmsisDap.Backend
 
 #if true
 
-            Trace.WriteLine("WriteStart " + DateTime.Now);
+            Debug.WriteLine("WriteStart " + DateTime.Now);
             var x = this.device.WriteAsync(data.ToArray());
             foreach (var item in data)
             {
-                Trace.Write(item.ToString("x2") + " ,");
+                Debug.Write(item.ToString("x2") + " ,");
             }
-            Trace.WriteLine("WriteStop  " + DateTime.Now);
+            Debug.WriteLine("WriteStop  " + DateTime.Now);
 
 
 #else
@@ -181,7 +181,7 @@ namespace openocd.CmsisDap.Backend
         public List<byte> read(int size = -1, int timeout = -1)
         {
             // HidReport report = this.device.ReadReport();
-            Trace.WriteLine("ReadStart :" + DateTime.Now);
+            Debug.WriteLine("ReadStart :" + DateTime.Now);
             var result = this.device.ReadAsync();
             var r = result.Wait(2000);
             if (r)
@@ -191,9 +191,9 @@ namespace openocd.CmsisDap.Backend
                 List<byte> bytes = result.Result.Data.ToList();
                 foreach (var item in bytes)
                 {
-                    Trace.Write(item.ToString("x2") + " ,");
+                    Debug.Write(item.ToString("x2") + " ,");
                 }
-                Trace.WriteLine("ReadStop  :" + DateTime.Now);
+                Debug.WriteLine("ReadStop  :" + DateTime.Now);
 #if false
                 return bytes.GetRange(1, bytes.Count - 1);
 #else
@@ -221,11 +221,11 @@ namespace openocd.CmsisDap.Backend
                         packet.AddRange(data);
             var _1 = this.device.WriteAndReadAsync(packet.ToArray());
 #else
-            Trace.WriteLine("ReadWrite :" + DateTime.Now);
+            Debug.WriteLine("ReadWrite :" + DateTime.Now);
             var _1 = this.device.WriteAndReadAsync(data.ToArray());
             foreach (var item in data)
             {
-                Trace.Write(item.ToString("x2") + " ,");
+                Debug.Write(item.ToString("x2") + " ,");
             }
 
 #endif
@@ -235,9 +235,9 @@ namespace openocd.CmsisDap.Backend
             {
                 foreach (var item in _1.Result.Data)
                 {
-                    Trace.Write(item.ToString("x2") + " ,");
+                    Debug.Write(item.ToString("x2") + " ,");
                 }
-                Trace.WriteLine("ReadWrites ^:" + DateTime.Now);
+                Debug.WriteLine("ReadWrites ^:" + DateTime.Now);
 
                 return _1.Result.Data.ToList();
             }

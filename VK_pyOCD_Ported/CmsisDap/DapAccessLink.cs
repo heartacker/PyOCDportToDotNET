@@ -111,8 +111,8 @@ namespace openocd.CmsisDap
         {
             get
             {
-                return (_backend_interface is Backend.BackendHidUsb) ?
-                  (_backend_interface as Backend.BackendHidUsb).product_name.Trim('\0')
+                return (_backend_interface is Backend.BackendHidUsbNew) ?
+                  (_backend_interface as Backend.BackendHidUsbNew).product_name.Trim('\0')
                  : (_backend_interface as Backend.BackendWinUsb).product_name.Trim('\0');
             }
 
