@@ -33,6 +33,7 @@ namespace openocd.CmsisDap.Backend
         public readonly object device_info;
         public readonly UInt16 vid;
         public readonly UInt16 pid;
+        public Queue<Tuple<string, List<Byte>>> Q { get; private set; } = new Queue<Tuple<string, List<byte>>>();
         public byte packet_count { get; set; }
         internal UInt16 packet_size;
         internal string serial_number { get; }
@@ -142,6 +143,10 @@ namespace openocd.CmsisDap.Backend
         //         
         public void write(List<byte> data)
         {
+            if (Q.Count > 100)
+            {
+                Q.Clear();
+            }
             foreach (var _ in Enumerable.Range(0, (int)this.packet_size - data.Count))
             {
                 data.Add(0);
@@ -152,13 +157,8 @@ namespace openocd.CmsisDap.Backend
 
 #if true
 
-            Debug.WriteLine("WriteStart " + DateTime.Now);
             var x = this.device.WriteAsync(data.ToArray());
-            foreach (var item in data)
-            {
-                Debug.Write(item.ToString("x2") + " ,");
-            }
-            Debug.WriteLine("WriteStop  " + DateTime.Now);
+            Q.Enqueue(new Tuple<string, List<byte>>(">>", data));
 
 
 #else
@@ -189,11 +189,7 @@ namespace openocd.CmsisDap.Backend
             {
                 // return report.Data.ToList(); 
                 List<byte> bytes = result.Result.Data.ToList();
-                foreach (var item in bytes)
-                {
-                    Trace.Write(item.ToString("x2") + " ,");
-                }
-                Trace.WriteLine("ReadStop  :" + DateTime.Now);
+                Q.Enqueue(new Tuple<string, List<byte>>("<<", bytes));
 #if false
                 return bytes.GetRange(1, bytes.Count - 1);
 #else
@@ -221,23 +217,15 @@ namespace openocd.CmsisDap.Backend
                         packet.AddRange(data);
             var _1 = this.device.WriteAndReadAsync(packet.ToArray());
 #else
-            Debug.WriteLine("ReadWrite :" + DateTime.Now);
             var _1 = this.device.WriteAndReadAsync(data.ToArray());
-            foreach (var item in data)
-            {
-                Debug.Write(item.ToString("x2") + " ,");
-            }
+            Q.Enqueue(new Tuple<string, List<byte>>(">>", data));
 
 #endif
 
             var rs = _1.Wait(2000);
             if (rs)
             {
-                foreach (var item in _1.Result.Data)
-                {
-                    Debug.Write(item.ToString("x2") + " ,");
-                }
-                Debug.WriteLine("ReadWrites ^:" + DateTime.Now);
+                Q.Enqueue(new Tuple<string, List<byte>>("<<", _1.Result.Data.ToList()));
 
                 return _1.Result.Data.ToList();
             }

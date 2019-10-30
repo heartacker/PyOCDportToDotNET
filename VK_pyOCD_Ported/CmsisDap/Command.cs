@@ -77,11 +77,15 @@ namespace openocd.CmsisDap
             }
             else
             {
+                // ldx 1 +1 +1+ 读的个数*1(byte + null) or 写的个数*5(byte + word(4) )
                 // DAP_Transfer request packet:
                 //   BYTE | BYTE *****| BYTE **********| BYTE *************| WORD *********|
                 // > 0x05 | DAP Index | Transfer Count | Transfer Request  | Transfer Data |
                 //  ******|***********|****************|+++++++++++++++++++++++++++++++++++|
                 send = (UInt16)(this._size - 3 - 1 * this._read_count - 5 * this._write_count);
+
+                // ldx 1 + dap反馈需要读的数*1byte + 回应值的 1+ 我打算读的个数*4
+
                 // DAP_Transfer response packet:
                 //   BYTE | BYTE **********| BYTE *************| WORD *********|
                 // < 0x05 | Transfer Count | Transfer Response | Transfer Data |

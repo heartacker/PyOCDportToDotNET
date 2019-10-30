@@ -52,6 +52,7 @@ namespace openocd.CoreSight
     {
 
         // CPUID PARTNO values
+        public const UInt16 ARM_CortexMu = 0x000;
         public const UInt16 ARM_CortexM0 = 0xC20;
         public const UInt16 ARM_CortexM1 = 0xC21;
         public const UInt16 ARM_CortexM3 = 0xC23;
@@ -61,6 +62,7 @@ namespace openocd.CoreSight
 
         public static Dictionary<UInt16, string> CORE_TYPE_NAME = new Dictionary<UInt16, string>()
         {
+            {ARM_CortexMu, "Cortex-unkown"},
             {ARM_CortexM0, "Cortex-M0"},
             {ARM_CortexM1, "Cortex-M1"},
             {ARM_CortexM3, "Cortex-M3"},
@@ -442,6 +444,7 @@ namespace openocd.CoreSight
             }
             this.arch = (cpuid & CortexM.CPUID_ARCHITECTURE_MASK) >> CortexM.CPUID_ARCHITECTURE_POS;
             this.core_type = (UInt16)((cpuid & CortexM.CPUID_PARTNO_MASK) >> CortexM.CPUID_PARTNO_POS);
+
             Trace.TraceInformation("CPU core is {0}", CORE_TYPE_NAME[this.core_type]);
         }
 
