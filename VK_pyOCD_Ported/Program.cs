@@ -45,7 +45,7 @@ namespace openocd.CmsisDap
 
             // IDapAccessLink link = links.First();
             link.open();
-            link.set_clock(300000); // Typically 1.8..2.0 MHz is fastest speed allowed
+            link.set_clock(10_000_000); // Typically 1.8..2.0 MHz is fastest speed allowed
             link.connect();
             ////link.set_deferred_transfer(true);
             link.set_deferred_transfer(false);
@@ -127,7 +127,7 @@ namespace openocd.CmsisDap
             {
                 UInt32 idcode = w.readIDCode();
                 //                     STM32                   Wiznet
-                Debug.Assert(idcode == 0x5BA02477 || idcode == 0x0bb11477);
+                Debug.Assert(idcode == 0x5BA02477 || idcode == 0x0bb11477 || idcode == 0x2ba01477);
 
             }
             //58.341]  < sequence name = "DebugCoreStart" Pname = "" disable = "false" info = "" >
@@ -221,7 +221,10 @@ namespace openocd.CmsisDap
                 w.flash.init();
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
+#if false //ldx
+
                 w.flash.eraseAll();
+# endif 
                 sw.Stop();
                 // Trace.TraceInformation("Chip erase speed is {0:0.000} s", sw.Elapsed.TotalSeconds);
             }
@@ -230,7 +233,7 @@ namespace openocd.CmsisDap
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 //l.AddRange(w.readBlockMemoryUnaligned8(0x00000000, 49508));
-                l.AddRange(w.readBlockMemoryUnaligned8(0x00000000, 128 * 1024));
+                l.AddRange(w.readBlockMemoryUnaligned8(0x00000000, 64 * 1024));
                 sw.Stop();
                 Trace.TraceInformation("Reading speed is {0:0.000} kB/s", ((double)128 * 1024 / 1024.0) / sw.Elapsed.TotalSeconds);
                 if (l.Any(b => b != 0xFF))
@@ -240,6 +243,9 @@ namespace openocd.CmsisDap
                 //byte[] bytes = l.ToArray();
                 //File.WriteAllBytes(@"C:\temp\flash.bin", bytes);
             }
+            Console.ReadKey();
+
+            return;
 
             // 
             byte[] bytes = File.ReadAllBytes(@"c:\temp\flash.bin");
