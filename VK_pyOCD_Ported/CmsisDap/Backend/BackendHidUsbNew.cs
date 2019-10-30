@@ -181,7 +181,6 @@ namespace openocd.CmsisDap.Backend
         public List<byte> read(int size = -1, int timeout = -1)
         {
             // HidReport report = this.device.ReadReport();
-            Debug.WriteLine("ReadStart :" + DateTime.Now);
             var result = this.device.ReadAsync();
             var r = result.Wait(2000);
             if (r)
