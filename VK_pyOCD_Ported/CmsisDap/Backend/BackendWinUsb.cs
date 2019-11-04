@@ -41,6 +41,8 @@ namespace openocd.CmsisDap.Backend
         }
 
         public bool isAvailable { get; set; }
+        bool IBackend.isAvailable { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        byte IBackend.packet_count { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public string getInfo()
         {
@@ -132,6 +134,66 @@ namespace openocd.CmsisDap.Backend
 
             }
             return packet_count;
+        }
+
+        byte IBackend.getset_packet_count(byte? valu, bool get)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IBackend.open()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IBackend.init()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IBackend.write(List<byte> data)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<byte> IBackend.read(int size, int timeout)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<List<byte>> IBackend.readAsync(int size, int timeout)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<byte> IBackend.WriteAndRead(List<byte> data)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<List<byte>> IBackend.WriteAndReadAsync(List<byte> data)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IBackend.getInfo()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IBackend.close()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IBackend.setPacketSize(ushort size)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IBackend.getSerialNumber()
+        {
+            throw new NotImplementedException();
         }
     }
 }

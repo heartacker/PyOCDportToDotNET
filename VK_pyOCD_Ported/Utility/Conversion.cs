@@ -10,11 +10,8 @@ using System.Diagnostics;
 
 namespace openocd.Utility
 {
-
-
     public static class Conversion
     {
-
         // Convert a list of bytes to a list of 32-bit integers (little endian)
         public static List<UInt32> byteListToU32leList(List<byte> data)
         {

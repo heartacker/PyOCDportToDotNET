@@ -141,7 +141,7 @@ namespace openocd.CmsisDap.Backend
         // 
         //         write data on the OUT endpoint associated to the HID interface
         //         
-        public void write(List<byte> data)
+        public async void write(List<byte> data)
         {
             if (Q.Count > 100)
             {
@@ -157,7 +157,7 @@ namespace openocd.CmsisDap.Backend
 
 #if true
 
-            var x = this.device.WriteAsync(data.ToArray());
+            await this.device.WriteAsync(data.ToArray());
             Q.Enqueue(new Tuple<string, List<byte>>(">>", data));
 
 
@@ -178,6 +178,13 @@ namespace openocd.CmsisDap.Backend
         // 
         //         read data on the IN endpoint associated to the HID interface
         //         
+        public async Task<List<byte>> readAsync(int size = -1, int timeout = -1)
+        {
+            // HidReport report = this.device.ReadReport();
+            var result = await this.device.ReadAsync();
+            return result.Data.ToList();
+        }
+
         public List<byte> read(int size = -1, int timeout = -1)
         {
             // HidReport report = this.device.ReadReport();
@@ -201,7 +208,6 @@ namespace openocd.CmsisDap.Backend
             }
         }
 
-
         public List<byte> WriteAndRead(List<byte> data)
         {
             foreach (var _ in Enumerable.Range(0, (int)this.packet_size - data.Count))
@@ -221,6 +227,7 @@ namespace openocd.CmsisDap.Backend
 
 #endif
 
+#if !async_flag
             var rs = _1.Wait(2000);
             if (rs)
             {
@@ -232,6 +239,48 @@ namespace openocd.CmsisDap.Backend
             {
                 return new List<byte>();
             }
+#else
+            return _1.Data.ToList();
+#endif
+
+
+        }
+
+
+        public async Task<List<byte>> WriteAndReadAsync(List<byte> data)
+        {
+            foreach (var _ in Enumerable.Range(0, (int)this.packet_size - data.Count))
+            {
+                data.Add(0);
+            }
+            Debug.Assert(this.packet_size == 64);
+            Debug.Assert(data.Count == 64);
+            //Trace.TraceInformation("send: {0}", data);
+#if false
+            List<byte> packet = new List<byte>() { 0 };
+                        packet.AddRange(data);
+            var _1 = this.device.WriteAndReadAsync(packet.ToArray());
+#else
+            var _1 = await this.device.WriteAndReadAsync(data.ToArray());
+            Q.Enqueue(new Tuple<string, List<byte>>(">>", data));
+
+#endif
+
+#if async_flag
+            //var rs = _1.Wait(2000);
+            if (rs)
+            {
+                Q.Enqueue(new Tuple<string, List<byte>>("<<", _1.Result.Data.ToList()));
+
+                return _1.Result.Data.ToList();
+            }
+            else
+            {
+                return new List<byte>();
+            } 
+#else
+            return _1.Data.ToList();
+#endif
 
 
         }

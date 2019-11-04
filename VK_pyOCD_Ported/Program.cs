@@ -126,7 +126,7 @@ namespace openocd.CmsisDap
 
             {
                 UInt32 idcode = w.readIDCode();
-                //                     STM32                   Wiznet
+                //                     STM32                   Wiznet                  AC7811
                 Debug.Assert(idcode == 0x5BA02477 || idcode == 0x0bb11477 || idcode == 0x2ba01477);
 
             }
@@ -134,9 +134,10 @@ namespace openocd.CmsisDap
             //      [15:43:58.341] < block atomic = "false" info = "" >
             //      [15:43:58.341]      
             w.write32(0xE000EDF0, 0xA05F0001);                                        // Enable Core Debug via DHCSR
-                                                                                      //[15:43:58.342]        // -> [Write32(0xE000EDF0, 0xA05F0001)] (__dp=0, __ap=0)
-                                                                                      //[15:43:58.342] Write32(0xE0042004, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
-                                                                                      // [15:43:58.342]        // -> [Write32(0xE0042004, 0x00000007)] (__dp=0, __ap=0)
+
+            //[15:43:58.342]        // -> [Write32(0xE000EDF0, 0xA05F0001)] (__dp=0, __ap=0)
+            //[15:43:58.342] Write32(0xE0042004, DbgMCU_CR);                                         // DBGMCU_CR: Configure MCU Debug
+            //[15:43:58.342]        // -> [Write32(0xE0042004, 0x00000007)] (__dp=0, __ap=0)
             w.write32(0xE0042004, 0x00000007);
             //[15:43:58.342] Write32(0xE0042008, DbgMCU_APB1_Fz);                                    // DBGMCU_APB1_FZ: Configure APB1 Peripheral Freeze Behavior
             //[15:43:58.343]        // -> [Write32(0xE0042008, 0x00000000)] (__dp=0, __ap=0)

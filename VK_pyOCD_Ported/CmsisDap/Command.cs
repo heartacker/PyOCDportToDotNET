@@ -19,6 +19,14 @@ namespace openocd.CmsisDap
     //     The payload to send over the layer below is constructed with
     //     encode_data.  The response to the command is decoded with decode_data.
     //     
+    /// <summary>
+    /// 一个包装器对象，代表一个命令发送到下面的层(例如USB)。
+    /// 这个类封装了物理命令DAP_Transfer和DAP_TransferBlock，以提供一种统一的方式来构建命令，从而最有效地传输所提供的数据。
+    /// 寄存器的读写被单独或以块的形式添加到命令对象中，直到它被填满。
+    /// 一旦满了，该类将决定使用DAP_Transfer还是DAP_TransferBlock更有效。
+    /// 通过下面的层发送的有效负载是用encode_data构造的。
+    /// 对命令的响应使用decode_data进行解码。
+    /// </summary>
     public class Command
     {
         internal UInt16 _size;
@@ -35,7 +43,7 @@ namespace openocd.CmsisDap
             this._size = size;
             this._read_count = 0;
             this._write_count = 0;
-            this._block_allowed = false;// todo ldx 
+            this._block_allowed = true;// todo ldx 
             this._block_request = null;
             this._data = new List<Tuple<UInt16, EDapTransferRequestByte, List<UInt32>>>();
             this._dap_index = null;
@@ -145,7 +153,8 @@ namespace openocd.CmsisDap
 
         public virtual bool get_full()
         {
-            return this._get_free_words(this._block_allowed, true) == 0 || this._get_free_words(this._block_allowed, false) == 0;
+            return this._get_free_words(this._block_allowed, true) == 0 ||
+                   this._get_free_words(this._block_allowed, false) == 0;
         }
 
         // 

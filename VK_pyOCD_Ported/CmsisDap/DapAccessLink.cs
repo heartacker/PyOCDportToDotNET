@@ -435,13 +435,15 @@ namespace openocd.CmsisDap
             // not completed (started by write_reg, read_reg,
             // reg_write_repeat and reg_read_repeat)
             this._transfer_list = new List<Transfer>(); // collections.deque();
-                                                        // The current packet - this can contain multiple
-                                                        // different transfers
+
+            // The current packet - this can contain multiple
+            // different transfers
             this._crnt_cmd = new Command((UInt16)this._packet_size);
             // Packets that have been sent but not read
             this._commands_to_read = new List<Command>(); // collections.deque();
-                                                          // Buffer for data returned for completed commands.
-                                                          // This data will be added to transfers
+
+            // Buffer for data returned for completed commands.
+            // This data will be added to transfers
             this._command_response_buf = new List<byte>();
         }
 

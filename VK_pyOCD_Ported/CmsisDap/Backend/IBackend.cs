@@ -31,8 +31,11 @@ namespace openocd.CmsisDap
         [OperationContract]
         List<byte> read(int size = -1, int timeout = -1);
 
+        Task<List<byte>> readAsync(int size = -1, int timeout = -1);
+
         [OperationContract]
         List<byte> WriteAndRead(List<byte> data);
+        Task<List<byte>> WriteAndReadAsync(List<byte> data);
 
         [OperationContract]
         string getInfo();

@@ -12,7 +12,11 @@ namespace openocd.CmsisDap
     // 
     //     The transfer class contains a logical register read or a block
     //     of reads to the same register.
-    //     
+    //
+    /// <summary>
+    /// 一个包装器对象，表示由上面的层调用的命令。
+    /// 传输类包含对同一寄存器的逻辑寄存器读或读块。
+    /// </summary>
     public class Transfer
     {
 
